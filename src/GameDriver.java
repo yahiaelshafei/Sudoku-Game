@@ -11,8 +11,13 @@ public class GameDriver implements Viewable{
     private RowManager rowManager;
     private ColumnManager columnManager;
     private BoxManager boxManager;
+    private Board board;
      public GameDriver() {
-        create_Folder_Structure();
+         board = Board.getInstance();
+         rowManager = new RowManager();
+         columnManager = new ColumnManager();
+         boxManager = new BoxManager();
+         create_Folder_Structure();
     }
      private void create_Folder_Structure() {
         try{
@@ -59,7 +64,7 @@ public class GameDriver implements Viewable{
     }
     @Override
 public Game getGame(DifficultyEnum level) throws NotFoundException {
-    File gameFolder = new File(getFolderPath(level));
+    File gameFolder = new File(level.getFolderPath());
     File[] availableGames = gameFolder.listFiles((dir, name) -> name.endsWith(".csv"));
     
     if (availableGames == null || availableGames.length == 0) {
@@ -74,18 +79,18 @@ public Game getGame(DifficultyEnum level) throws NotFoundException {
     
     return new Game(gameGrid, level);
 }
-    private String getFolderPath(DifficultyEnum level) {
-        switch (level) {
-            case EASY:
-                return EASY_DIRECTORY;
-            case MEDIUM:
-                return MEDIUM_DIRECTORY;
-            case HARD:
-                return HARD_DIRECTORY;
-            default:
-                return EASY_DIRECTORY;
-        }
-    }
+//    private String getFolderPath(DifficultyEnum level) {
+//        switch (level) {
+//            case EASY:
+//                return EASY_DIRECTORY;
+//            case MEDIUM:
+//                return MEDIUM_DIRECTORY;
+//            case HARD:
+//                return HARD_DIRECTORY;
+//            default:
+//                return EASY_DIRECTORY;
+//        }
+//    }
     private int[][] loadGameFromFile(String filePath) {
         int[][] grid = new int[9][9];
         
@@ -169,12 +174,10 @@ public Game getGame(DifficultyEnum level) throws NotFoundException {
             return "INCOMPLETE";
         }
 
-        setGridInBoard(grid);
-        
-        rowManager = new RowManager();
-        columnManager = new ColumnManager();
-        boxManager = new BoxManager();
+        //setGridInBoard(grid); this is confusing, ~ mamdouh
+        board.setGrid(grid);
 
+        rowManager.run();
         columnManager.run();
         boxManager.run();
 
@@ -253,7 +256,43 @@ public Game getGame(DifficultyEnum level) throws NotFoundException {
                 "Solver only works with exactly 5 empty cells. Found: " + emptyCount
             );
         }
-        throw new UnsupportedOperationException("Solver not yet implemented. Section 8 will complete this.");
+        //throw new UnsupportedOperationException("Solver not yet implemented. Section 8 will complete this.");
+        Map<Integer,Integer> emptyCells = game.getEmptyCells();
+        int[] permutations = new int[5];
+        Iterator permutator = new PermuationGenerator();
+        boolean isValid = false;
+
+        while (permutator.hasNext()) {
+            permutations = (int[]) permutator.next();
+            rowManager.run(emptyCells,permutations);
+            columnManager.run(emptyCells,permutations);
+            boxManager.run(emptyCells,permutations);
+
+            isValid = RowManager.getStatus() &&
+                    ColumnManager.getStatus() &&
+                    BoxManager.getStatus();
+            if (isValid) break;
+        }
+
+        int[] ret = new int[game.countEmptyCells() * 3];
+        if(isValid) {
+            int i = 0;
+            while( i != 5){
+                for (Map.Entry<Integer,Integer> mapElement : emptyCells.entrySet()) {
+                    int key = mapElement.getKey();
+                    int value = mapElement.getValue();
+
+                    if(value == i){
+                        ret[i * 3] = key / 10;
+                        ret[i * 3 + 1] = key % 10;
+                        ret[i * 3 + 2] = permutations[value];
+                        i++;
+                    }
+                }
+            }
+            return ret;
+        }
+        throw new UnsupportedOperationException("Unsolvable grid");
     }
  
     @Override
@@ -270,7 +309,7 @@ public Game getGame(DifficultyEnum level) throws NotFoundException {
     }
 
     public void deleteGameFromFolder(DifficultyEnum difficulty, String fileName) {
-        String folderPath = getFolderPath(difficulty);
+        String folderPath = difficulty.getFolderPath();
         Path filePath = Paths.get(folderPath, fileName);
         
         try {
