@@ -2,8 +2,10 @@ public class SudokuGUI {
 
     private Controllable controller;
     private int[][] currentBoard;
+    private Board board;
 
     public SudokuGUI(Controllable controller) {
+        board = Board.getInstance();
         this.controller = controller;
         startApplication();
     }
@@ -40,8 +42,8 @@ public class SudokuGUI {
     }
 
     private int[][] askSolvedBoard() {
-        Board.readFromFile("solved.csv");
-        return Board.getGrid();
+        board.readFromFile("solved.csv");
+        return board.getGrid();
     }
 
     public void onVerifyClicked() {

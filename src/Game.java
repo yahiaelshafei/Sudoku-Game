@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Game {
     private int[][] board;
     private DifficultyEnum level;
@@ -9,7 +12,7 @@ public class Game {
                 this.board[i][j] = grid[i][j];
             }
         }
-        this.level = null; 
+        this.level = null;
     }
 
     public Game(int[][] grid, DifficultyEnum difficulty) {
@@ -87,5 +90,20 @@ public class Game {
         }
         return count;
     }
+    public Map<Integer,Integer> getEmptyCells(){
+        Map<Integer,Integer> emptyCells = new HashMap<>();
+
+        int idx = 0;
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if(board[i][j] == 0){
+                    emptyCells.put(i*10 + j,idx);
+                    idx++;
+                }
+            }
+        }
+        return emptyCells;
+    }
+
 
 }

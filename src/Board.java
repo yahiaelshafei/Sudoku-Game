@@ -6,8 +6,22 @@ import java.nio.file.Paths;
 
 public class Board {
     private static int[][] grid;
+    private static Board instance = null;
 
-    public static void readFromFile(String fileName) {
+    private Board(){}
+
+
+    public static Board getInstance()
+    {
+        if (instance == null)
+        {
+            instance = new Board();
+        }
+        return instance;
+    }
+
+
+    public void readFromFile(String fileName) {
         grid = new int[9][9];
         Path p = Paths.get(fileName);
         if (!Files.exists(p))
@@ -28,11 +42,11 @@ public class Board {
         return;
     }
 
-    public static int[][] getGrid() {
+    public int[][] getGrid() {
         return grid;
     }
     //added
-    public static void setGrid(int[][] newGrid) {
+    public void setGrid(int[][] newGrid) {
     grid = newGrid;
 }
 }
