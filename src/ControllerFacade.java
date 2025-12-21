@@ -14,12 +14,14 @@ public class ControllerFacade implements Controllable {
     }
 
     @Override
+    public Game getGame(DifficultyEnum level) throws NotFoundException {
+        return controller.getGame(level);
+    }
+
     public int[][] getGame(char level) throws NotFoundException {
         if (level == 'I') {
-            Game g = ((GameDriver) controller).loadIncompleteGame();
-            if (g == null) {
-                throw new NotFoundException("No incomplete game found");
-            }
+            Game g = loadIncompleteGame();
+            if (g == null) throw new NotFoundException("No incomplete game found");
             return g.getGrid();
         }
 
@@ -27,39 +29,42 @@ public class ControllerFacade implements Controllable {
             case 'E' -> DifficultyEnum.EASY;
             case 'M' -> DifficultyEnum.MEDIUM;
             case 'H' -> DifficultyEnum.HARD;
-            default -> throw new IllegalArgumentException("Invalid difficulty");
+            default -> throw new IllegalArgumentException("Invalid difficulty: " + level);
         };
 
-        return controller.getGame(d).getGrid();
+        return getGame(d).getGrid();
     }
 
     @Override
-    public void driveGames(int[][] source) throws SolutionInvalidException {
-        controller.driveGames(new Game(source));
+    public void driveGames(Game source) throws SolutionInvalidException {
+        controller.driveGames(source);
     }
 
     @Override
-    public boolean[][] verifyGame(int[][] game) {
-        String result = controller.verifyGame(new Game(game));
-        boolean[][] status = new boolean[9][9];
+    public String verifyGame(Game game) {
+        return controller.verifyGame(game);
+    }
 
+    public boolean[][] verifyGameStatus(int[][] game) {
+        String result = verifyGame(new Game(game));
         boolean valid = result.equals("VALID") || result.equals("INCOMPLETE");
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        boolean[][] status = new boolean[9][9];
+        for (int i = 0; i < 9; i++)
+            for (int j = 0; j < 9; j++)
                 status[i][j] = valid;
-            }
-        }
         return status;
     }
 
     @Override
-    public int[][] solveGame(int[][] game) throws InvalidGameException {
-        int[] solution = controller.solveGame(new Game(game));
+    public int[] solveGame(Game game) throws InvalidGameException {
+        return controller.solveGame(game);
+    }
 
+
+    public int[][] solveGame(int[][] game) throws InvalidGameException {
+        int[] solution = solveGame(new Game(game));
         for (int i = 0; i < solution.length; i += 3) {
-            int r = solution[i];
-            int c = solution[i + 1];
-            int v = solution[i + 2];
+            int r = solution[i], c = solution[i + 1], v = solution[i + 2];
             game[r][c] = v;
         }
         return game;
@@ -68,5 +73,14 @@ public class ControllerFacade implements Controllable {
     @Override
     public void logUserAction(UserAction action) throws IOException {
         controller.logUserAction(action.toString());
+    }
+
+
+    @Override
+    public Game loadIncompleteGame() {
+        if (controller instanceof Controllable c) {
+            return c.loadIncompleteGame();
+        }
+        return null;
     }
 }
