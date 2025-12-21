@@ -46,7 +46,7 @@ public class Board {
         return grid;
     }
     //added
-    public void setGrid(int[][] newGrid) {
+    public static void setGrid(int[][] newGrid) {
     grid = newGrid;
 }
 }
