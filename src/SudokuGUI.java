@@ -15,8 +15,8 @@ public class SudokuGUI implements BoardObserver {
 
         try {
             if (catalog.isGameInProgress()) {
-                // Load incomplete game
-                Game incompleteGame = ((GameDriver) controller).loadIncompleteGame();
+                // Load the incomplete game
+                Game incompleteGame = controller.loadIncompleteGame();
                 if (incompleteGame != null) {
                     currentBoard = incompleteGame.getGrid();
                     System.out.println("Resuming unfinished game...");
@@ -36,6 +36,7 @@ public class SudokuGUI implements BoardObserver {
             }
 
             displayBoard();
+
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -76,8 +77,11 @@ public class SudokuGUI implements BoardObserver {
     }
 
     private void applySolutionToBoard(int[] solution, int[][] board) {
+        // Each entry is 3 elements: row, col, value
         for (int i = 0; i < solution.length; i += 3) {
-            int row = solution[i], col = solution[i + 1], value = solution[i + 2];
+            int row = solution[i];
+            int col = solution[i + 1];
+            int value = solution[i + 2];
             board[row][col] = value;
         }
     }
@@ -93,7 +97,9 @@ public class SudokuGUI implements BoardObserver {
     private void displayBoard() {
         System.out.println("Displaying Sudoku board:");
         for (int[] row : currentBoard) {
-            for (int val : row) System.out.print(val + " ");
+            for (int val : row) {
+                System.out.print(val + " ");
+            }
             System.out.println();
         }
     }
@@ -102,7 +108,9 @@ public class SudokuGUI implements BoardObserver {
     public void update(int[][] board) {
         System.out.println("Board updated:");
         for (int[] row : board) {
-            for (int val : row) System.out.print(val + " ");
+            for (int val : row) {
+                System.out.print(val + " ");
+            }
             System.out.println();
         }
     }
