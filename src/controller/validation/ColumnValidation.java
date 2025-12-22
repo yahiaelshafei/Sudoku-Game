@@ -1,0 +1,15 @@
+package controller.validation;
+
+import model.Game;
+import model.grid.Board;
+
+public class ColumnValidation implements ValidationStrategy {
+
+    @Override
+    public boolean validate(Game game) {
+        Board.setGrid(game.getGrid());
+        ColumnManager manager = new ColumnManager();
+        manager.run();
+        return ColumnManager.getStatus();
+    }
+}
