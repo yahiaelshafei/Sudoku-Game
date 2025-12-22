@@ -5,7 +5,7 @@ public class Main {
         Controllable controller = new ControllerFacade(new GameDriver());
 
         SwingUtilities.invokeLater(() -> {
-            new SudokuGUI(controller);
+            new SudokuGui(controller);
         });
     }
 }
