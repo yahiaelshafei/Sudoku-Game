@@ -1,6 +1,6 @@
-package controller.validation;
+package controller.grid;
 
-import java.util.Map;
+import java.util.*;
 
 import model.grid.Box;
 

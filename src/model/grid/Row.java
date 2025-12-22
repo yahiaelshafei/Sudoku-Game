@@ -1,6 +1,6 @@
 package model.grid;
 
-import java.util.Map;
+import java.util.*;
 
 public class Row extends GridElement {
     public Row(int rowNumber) {
@@ -26,5 +26,4 @@ public class Row extends GridElement {
         }
         return status;
     }
-
 }

@@ -1,35 +1,35 @@
-package controller.validation;
+package controller.grid;
 
-import java.util.Map;
+import java.util.*;
 
-import model.grid.Row;
+import model.grid.Column;
 
-public class RowManager {
-    private Row[] rows = new Row[9];
+public class ColumnManager {
+    private Column[] columns = new Column[9];
     private static boolean status;
 
-    public RowManager() {
+    public ColumnManager() {
         status = true;
         for (int i = 0; i < 9; i++) {
-            rows[i] = new Row(i);
+            columns[i] = new Column(i);
         }
     }
 
     public void run() {
         for (int i = 0; i < 9; i++) {
-            status &= rows[i].scan();
+            status &= columns[i].scan();
         }
     }
 
     public void run(Map<Integer, Integer> emptycells, int[] permutation) {
         for (int i = 0; i < 9; i++) {
-            status &= rows[i].scan(emptycells, permutation);
+            status &= columns[i].scan(emptycells, permutation);
         }
     }
 
     public void printError() {
         for (int i = 0; i < 9; i++) {
-            rows[i].printError();
+            columns[i].printError();
         }
     }
 
@@ -38,6 +38,6 @@ public class RowManager {
     }
 
     public static synchronized void setStatus(boolean status) {
-        RowManager.status = status;
+        ColumnManager.status = status;
     }
 }

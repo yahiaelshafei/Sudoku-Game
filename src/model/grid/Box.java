@@ -1,18 +1,6 @@
 package model.grid;
-//indices of the boxes
 
-// 0 -> 00
-// 1 -> 03
-// 2 -> 06
-// 3 -> 30
-// 4 -> 33
-// 5 -> 36
-// 6 -> 60
-// 7 -> 63
-// 8 -> 66
-// n -> ((n/3) * 3) ((n%3)*3)
-
-import java.util.Map;
+import java.util.*;
 
 public class Box extends GridElement {
     public Box(int boxNumber) {
@@ -45,5 +33,4 @@ public class Box extends GridElement {
         }
         return status;
     }
-
 }

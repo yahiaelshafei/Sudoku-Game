@@ -1,14 +1,9 @@
 package view;
 
-import java.io.IOException;
-
-import controller.DifficultyEnum;
-import controller.exception.InvalidGameException;
-import controller.exception.NotFoundException;
-import controller.exception.SolutionInvalidException;
-import model.Catalog;
-import model.Game;
-import model.UserAction;
+import java.io.*;
+import controller.*;
+import controller.exception.*;
+import model.*;
 
 public interface Controllable {
     Catalog getCatalog();
@@ -23,5 +18,5 @@ public interface Controllable {
 
     void logUserAction(UserAction action) throws IOException;
 
-    Game loadIncompleteGame(); // <-- Added
+    Game loadIncompleteGame();
 }

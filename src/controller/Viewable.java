@@ -1,12 +1,8 @@
 package controller;
 
-import java.io.IOException;
-
-import controller.exception.InvalidGameException;
-import controller.exception.NotFoundException;
-import controller.exception.SolutionInvalidException;
-import model.Catalog;
-import model.Game;
+import java.io.*;
+import controller.exception.*;
+import model.*;
 
 public interface Viewable {
     Catalog getCatalog();

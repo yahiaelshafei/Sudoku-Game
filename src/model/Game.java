@@ -1,8 +1,6 @@
 package model;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.*;
 import controller.DifficultyEnum;
 
 public class Game {
@@ -105,5 +103,4 @@ public class Game {
         }
         return emptyCells;
     }
-
 }

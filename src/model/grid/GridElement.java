@@ -1,8 +1,6 @@
 package model.grid;
-// array[y][x] ... for anyone reading this, to not get confused
 
-// we start the grid at 0,0
-// but in the locations[] array, the first index is skipped ,i.e. we use locations[1-9]
+import model.Board;
 
 public abstract class GridElement {
     enum Type {
@@ -20,12 +18,6 @@ public abstract class GridElement {
     protected Type type;
     protected boolean status;
     protected StringBuilder[] locations = new StringBuilder[10];
-    // locations is an array that, for all numbers, would have a string of all the
-    // indices of its occurrence
-    // Since the indices are 1-9 (i.e. one digit):
-    // we could use the .length() to get the number of occurrences
-    // we could use the .split() when printing, to eliminate other iterations of the
-    // row
 
     public GridElement(int elementNumber, Type type) {
         board = Board.getInstance();

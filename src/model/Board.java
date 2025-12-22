@@ -1,10 +1,7 @@
-package model.grid;
+package model;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
+import java.nio.file.*;
 
 public class Board {
     private static int[][] grid;
@@ -45,7 +42,6 @@ public class Board {
         return grid;
     }
 
-    // added
     public static void setGrid(int[][] newGrid) {
         grid = newGrid;
     }

@@ -1,7 +1,7 @@
 package controller.validation;
 
-import model.Game;
-import model.grid.Board;
+import controller.grid.RowManager;
+import model.*;
 
 public class RowValidation implements ValidationStrategy {
 

@@ -1,6 +1,6 @@
 package controller.validation;
 
-import model.Game;
+import model.*;
 
 public interface ValidationStrategy {
     boolean validate(Game game);
