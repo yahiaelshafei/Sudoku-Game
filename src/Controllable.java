@@ -1,16 +1,11 @@
-
 import java.io.IOException;
+
 public interface Controllable {
     Catalog getCatalog();
-
-    int[][] getGame(char level) throws NotFoundException;
-
-    void driveGames(int[][] source) throws SolutionInvalidException;
-
-    boolean[][] verifyGame(int[][] game);
-
-    int[][] solveGame(int[][] game) throws InvalidGameException;
-
+    Game getGame(DifficultyEnum level) throws NotFoundException;
+    void driveGames(Game source) throws SolutionInvalidException;
+    String verifyGame(Game game);
+    int[] solveGame(Game game) throws InvalidGameException;
     void logUserAction(UserAction action) throws IOException;
+    Game loadIncompleteGame(); // <-- Added
 }
-
