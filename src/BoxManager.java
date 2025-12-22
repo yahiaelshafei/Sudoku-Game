@@ -7,7 +7,7 @@ public class BoxManager{
     public BoxManager() {
         status = true;
         for (int i = 0; i < 9; i++) {
-            boxes[i] = new Box(i);
+            boxes[i] = Box.getInstance(i);
         }
     }
 

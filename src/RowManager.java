@@ -7,7 +7,7 @@ public class RowManager {
     public RowManager() {
         status = true;
         for (int i = 0; i < 9; i++) {
-            rows[i] = new Row(i);
+            rows[i] = Row.getInstance(i);
         }
     }
 

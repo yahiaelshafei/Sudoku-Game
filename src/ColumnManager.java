@@ -7,7 +7,7 @@ public class ColumnManager  {
     public ColumnManager() {
         status = true;
         for (int i = 0; i < 9; i++) {
-            columns[i] = new Column(i);
+            columns[i] = Column.getInstance(i);
         }
     }
 
