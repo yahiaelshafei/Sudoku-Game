@@ -14,6 +14,9 @@ public class GameDriver implements Viewable {
     private BoxManager boxManager;
     private Board board;
 
+    public static boolean solverStatus;
+    public static int[] solverSolution;
+
     public GameDriver() {
         board = Board.getInstance();
         rowManager = new RowManager();
@@ -232,22 +235,22 @@ public class GameDriver implements Viewable {
         Map<Integer, Integer> emptyCells = game.getEmptyCells();
         int[] permutations = new int[5];
         Iterator permutator = new PermuationGenerator();
-        boolean isValid = false;
-
+        PermutationValidator pv;
+        solverStatus = false;
         while (permutator.hasNext()) {
             permutations = (int[]) permutator.next();
-            rowManager.run(emptyCells, permutations);
-            columnManager.run(emptyCells, permutations);
-            boxManager.run(emptyCells, permutations);
+            pv = new PermutationValidator(emptyCells,permutations,game);
+            pv.start();
 
-            isValid = RowManager.getStatus() &&
-                    ColumnManager.getStatus() &&
-                    BoxManager.getStatus();
-            if (isValid) break;
+            if(solverStatus)
+            {
+                break;
+            }
         }
 
         int[] ret = new int[game.countEmptyCells() * 3];
-        if (isValid) {
+        if (solverStatus) {
+            permutations = solverSolution;
             int i = 0;
             while (i != 5) {
                 for (Map.Entry<Integer, Integer> mapElement : emptyCells.entrySet()) {
